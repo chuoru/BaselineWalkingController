@@ -2,9 +2,8 @@
 
 #include <BaselineWalkingController/State.h>
 
-#include <geometry_msgs/PoseStamped.h>
-#include <ros/callback_queue.h>
-#include <ros/ros.h>
+#include <geometry_msgs/msg/pose_stamped.hpp>
+#include <rclcpp/rclcpp.hpp>
 
 namespace BWC
 {
@@ -29,7 +28,7 @@ protected:
   void walkToGoal();
 
   /** \brief ROS callback of pose topic. */
-  void poseCallback(const geometry_msgs::PoseStamped::ConstPtr & poseMsg);
+  void poseCallback(const geometry_msgs::msg::PoseStamped::SharedPtr poseMsg);
 
 protected:
   //! List of frame names representing world coordinates
@@ -43,10 +42,9 @@ protected:
 
   //! ROS variables
   //! @{
-  std::unique_ptr<ros::NodeHandle> nh_;
-  ros::CallbackQueue callbackQueue_;
-  ros::Subscriber poseSub_;
-  std::shared_ptr<geometry_msgs::PoseStamped> poseMsg_;
+  std::shared_ptr<rclcpp::Node> nh_;
+  rclcpp::Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr poseSub_;
+  std::shared_ptr<geometry_msgs::msg::PoseStamped> poseMsg_;
   //! @}
 };
 } // namespace BWC

@@ -10,6 +10,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(PROJECT_USE_CMAKE_EXPORT TRUE)
 set(CXX_DISABLE_WERROR ON)
 set(CMAKE_COLOR_DIAGNOSTICS ON)
+option(USE_ROS2 "Use ROS2" OFF)
 option(INSTALL_DOCUMENTATION "Generate and install the documentation" OFF)
 
 include(cmake/base.cmake)
@@ -21,33 +22,20 @@ if(NOT TARGET mc_rtc::mc_rtc_ros)
   message(FATAL_ERROR "mc_rtc ROS plugin is required for this controller")
 endif()
 
-if(DEFINED CATKIN_DEVEL_PREFIX)
+find_package(trajectory_collection REQUIRED)
+find_package(force_control_collection REQUIRED)
+find_package(centroidal_control_collection REQUIRED)
+find_package(nmpc_ddp REQUIRED)
+
+if(USE_ROS2)
   set(DOXYGEN_HTML_OUTPUT html)
-  find_package(catkin REQUIRED COMPONENTS
-    roscpp
-    geometry_msgs
-    trajectory_collection
-    force_control_collection
-    centroidal_control_collection
-  )
+  find_package(geometry_msgs REQUIRED)
+  find_package(visualization_msgs REQUIRED)
+  find_package(std_srvs REQUIRED)
 
   # Eigen
   find_package(Eigen3 REQUIRED)
   include_directories(${EIGEN3_INCLUDE_DIR})
-
-  catkin_package(
-    CATKIN_DEPENDS
-    roscpp
-    geometry_msgs
-    trajectory_collection
-    force_control_collection
-    centroidal_control_collection
-    DEPENDS EIGEN3
-    INCLUDE_DIRS include
-    LIBRARIES BaselineWalkingController
-  )
-
-  include_directories(include ${catkin_INCLUDE_DIRS})
   link_directories(${catkin_LIBRARY_DIRS})
   set(CONFIG_OUT "${CATKIN_DEVEL_PREFIX}/lib/mc_controller/etc/BaselineWalkingController.yaml")
   set(CONFIG_DIR_STANDALONE "${MC_CONTROLLER_RUNTIME_INSTALL_PREFIX}/BaselineWalkingController")
@@ -76,6 +64,8 @@ install(FILES ${CONFIG_OUT} DESTINATION ${MC_RTC_LIBDIR}/mc_controller/etc/)
 add_subdirectory(src)
 
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/BaselineWalkingController DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/launch/ DESTINATION share/${PROJECT_NAME}/launch)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/rviz/ DESTINATION share/${PROJECT_NAME}/rviz)
 
 if(BUILD_TESTING OR CATKIN_ENABLE_TESTING)
   add_subdirectory(tests)
@@ -87,3 +77,4 @@ endif()
 
 set(PACKAGE_EXTRA_MACROS "set(BWC_STATES_LIBRARIES \"${MC_CONTROLLER_INSTALL_PREFIX}/baseline_walking_controller/states\")
 set(BWC_STATES_FILES \"\${BWC_STATES_LIBRARIES}/data\")")
+ament_package()

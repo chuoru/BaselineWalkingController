@@ -8,6 +8,7 @@
 #include <BaselineWalkingController/states/RosWalkState.h>
 
 using namespace BWC;
+using std::placeholders::_1;
 
 void RosWalkState::start(mc_control::fsm::Controller & _ctl)
 {
@@ -34,10 +35,9 @@ void RosWalkState::start(mc_control::fsm::Controller & _ctl)
   }
 
   // Setup ROS
-  nh_ = std::make_unique<ros::NodeHandle>();
+  nh_ = rclcpp::Node::make_shared("ros_walk_state_node");
   // Use a dedicated queue so as not to call callbacks of other modules
-  nh_->setCallbackQueue(&callbackQueue_);
-  poseSub_ = nh_->subscribe<geometry_msgs::PoseStamped>(poseTopicName, 1, &RosWalkState::poseCallback, this);
+  poseSub_ = nh_->create_subscription<geometry_msgs::msg::PoseStamped>(poseTopicName, 1, std::bind(&RosWalkState::poseCallback, this , _1));
   poseMsg_ = nullptr;
 
   // Setup GUI
@@ -50,7 +50,7 @@ void RosWalkState::start(mc_control::fsm::Controller & _ctl)
 bool RosWalkState::run(mc_control::fsm::Controller &)
 {
   // Call ROS callback
-  callbackQueue_.callAvailable(ros::WallDuration());
+  rclcpp::spin_some(nh_);
 
   return false;
 }
@@ -138,9 +138,9 @@ void RosWalkState::walkToGoal()
   ctl().gui()->removeElement({ctl().name(), "RosWalk"}, "GoalPose");
 }
 
-void RosWalkState::poseCallback(const geometry_msgs::PoseStamped::ConstPtr & poseMsg)
+void RosWalkState::poseCallback(const geometry_msgs::msg::PoseStamped::SharedPtr poseMsg)
 {
-  poseMsg_ = std::make_shared<geometry_msgs::PoseStamped>(*poseMsg);
+  poseMsg_ = std::make_shared<geometry_msgs::msg::PoseStamped>(*poseMsg);
 }
 
 EXPORT_SINGLE_STATE("BWC::RosWalk", RosWalkState)
