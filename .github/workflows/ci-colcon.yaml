@@ -98,8 +98,8 @@ jobs:
       - name: Checkout CentroidalControlCollection
         uses: actions/checkout@v3
         with:
-          repository: ThomasDuvinage/CentroidalControlCollection
-          ref: ros2
+          repository: nqtabokado/CentroidalControlCollection
+          ref: feature/add-rostest
           submodules: recursive
           path: colcon_ws/src/CentroidalControlCollection
       - name: Colcon build CentroidalControlCollection
