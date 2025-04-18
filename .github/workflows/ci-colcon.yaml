@@ -50,7 +50,7 @@ jobs:
           else
             echo "UPLOAD_DOCUMENTATION=false" >> $GITHUB_ENV
           fi
-      - name: Install ROS
+      - name: Install ROS 2
         uses: jrl-umi3218/github-actions/install-dependencies@master
         with:
           build-type: ${{ matrix.build-type }}
@@ -58,15 +58,24 @@ jobs:
             apt: ros-base
       - name: Install wstool
         run: sudo apt-get update && sudo apt-get install -y python3-wstool
+      - name: Install Dependencies
+        uses: jrl-umi3218/github-actions/install-dependencies@master
+        with:
+          build-type: ${{ matrix.build-type }}
+          ubuntu: |
+            apt-mirrors:
+              mc-rtc:
+                cloudsmith: mc-rtc/head
+            apt: libgtest-dev libeigen-qld-dev libmc-rtc-dev libqpsolvercollection-dev
       # - name: Checkout repository code
       #   uses: actions/checkout@v3
       #   with:
       #     path: colcon_ws/src/BaselineWalkingController
-      - name: Checkout QpSolverCollection
-        uses: actions/checkout@v3
-        with:
-          repository: isri-aist/QpSolverCollection
-          path: colcon_ws/src/QpSolverCollection
+      # - name: Checkout QpSolverCollection
+      #   uses: actions/checkout@v3
+      #   with:
+      #     repository: isri-aist/QpSolverCollection
+      #     path: colcon_ws/src/QpSolverCollection
       - name: Checkout ForceControlCollection
         uses: actions/checkout@v3
         with:
