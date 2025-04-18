@@ -35,6 +35,7 @@ RUN apt-get upgrade
 # RUN apt-get update -qq
 # RUN apt-get install -y ros-${ROS_DISTRO}-ros-base python3-catkin-tools python3-rosdep python3-wstool python3-rosinstall python3-rosinstall-generator doxygen graphviz
 RUN apt-get install -y ros-${ROS_DISTRO}-ros-base python3-rosdep python3-wstool python3-rosinstall python3-rosinstall-generator doxygen graphviz
+RUN source /opt/ros/humble/setup.bash
 
 # Install mc_rtc
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/mc-rtc/stable/setup.deb.sh' | bash

@@ -240,8 +240,10 @@ jobs:
         with:
           compiler: ${{ matrix.compiler }}
           build-type: ${{ matrix.build-type }}
+          # ubuntu: |
+          # apt: libforcecontrolcollection-dev libtrajectorycollection-dev libcentroidalcontrolcollection-dev
           ubuntu: |
-            apt: libforcecontrolcollection-dev libtrajectorycollection-dev libcentroidalcontrolcollection-dev
+            apt: libforcecontrolcollection-dev libtrajectorycollection-dev
       - name: Install BaselineFootstepPlanner for standalone build
         if: matrix.colcon-build == 'standalone' && matrix.motion-type == 'WalkingWithFootstepPlanner'
         uses: jrl-umi3218/github-actions/install-dependencies@master
