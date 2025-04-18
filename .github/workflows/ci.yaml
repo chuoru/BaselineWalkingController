@@ -223,8 +223,6 @@ jobs:
             echo "BASELINE_FOOTSTEP_PLANNER=" >> $GITHUB_ENV
           fi
       - name: Install dependencies
-      - name: Install wstool
-        run: sudo apt-get update && sudo apt-get install -y python3-wstool
         uses: jrl-umi3218/github-actions/install-dependencies@master
         with:
           ubuntu: |
@@ -236,6 +234,8 @@ jobs:
           #   apt: ros-base mc-rtc-plugin eigen-conversions
           ros: |
             apt: ros-base
+      - name: Install wstool
+        run: sudo apt-get update && sudo apt-get install -y python3-wstool
       - name: Install standalone dependencies
         if: matrix.colcon-build == 'standalone'
         uses: jrl-umi3218/github-actions/install-dependencies@master
