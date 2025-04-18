@@ -66,7 +66,7 @@ jobs:
             apt-mirrors:
               mc-rtc:
                 cloudsmith: mc-rtc/head
-            apt: libgtest-dev libeigen-qld-dev libmc-rtc-dev mc-rtc-utils libqpsolvercollection-dev libforcecontrolcollection-dev
+            apt: libgtest-dev libeigen-qld-dev libmc-rtc-dev mc-rtc-utils libqpsolvercollection-dev libforcecontrolcollection-dev libtrajectorycollection-dev
       # - name: Checkout repository code
       #   uses: actions/checkout@v3
       #   with:
