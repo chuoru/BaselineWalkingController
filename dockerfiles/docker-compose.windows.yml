@@ -1,0 +1,16 @@
+version: '3.3'
+
+services:
+  baseline_walking_controller:
+    image: centroidal_control_collection:humble
+    user: root
+    container_name: baseline_walking_controller-humble
+    build:
+      context: ..
+      dockerfile: ./dockerfiles/Dockerfile.windows
+    volumes:
+      - "../:/root/catkin_ws/src/baseline_walking_controller/"
+    privileged: True
+    stdin_open: True
+    # network_mode: host
+    command: bash

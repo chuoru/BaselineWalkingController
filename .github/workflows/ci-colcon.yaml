@@ -106,7 +106,7 @@ jobs:
         uses: jrl-umi3218/github-actions/build-colcon-project@master
         with:
           build-type: ${{ matrix.build-type }}
-          cmake-args: -DOPTIMIZE_FOR_NATIVE=${{ matrix.optimize-for-native }} -DINSTALL_DOCUMENTATION=${{ env.UPLOAD_DOCUMENTATION }} -DENABLE_QLD=ON -DUSE_ROS2=ON -DAMENT_CMAKE_UNINSTALL_TARGET=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+          cmake-args: -DOPTIMIZE_FOR_NATIVE=${{ matrix.optimize-for-native }} -DINSTALL_DOCUMENTATION=${{ env.UPLOAD_DOCUMENTATION }} -DUSE_ROS2=ON -DAMENT_CMAKE_UNINSTALL_TARGET=OFF
           build-packages: centroidal_control_collection
           test-packages: centroidal_control_collection
       - name: Colcon build baseline_walking_controller
