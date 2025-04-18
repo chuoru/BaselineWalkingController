@@ -230,8 +230,10 @@ jobs:
               mc-rtc:
                 cloudsmith: mc-rtc/${{ matrix.mc-rtc-version }}
             apt: libmc-rtc-dev mc-rtc-utils mc-state-observation doxygen graphviz
+          # ros: |
+          #   apt: ros-base mc-rtc-plugin eigen-conversions
           ros: |
-            apt: ros-base mc-rtc-plugin eigen-conversions
+            apt: ros-base eigen-conversions
       - name: Install standalone dependencies
         if: matrix.colcon-build == 'standalone'
         uses: jrl-umi3218/github-actions/install-dependencies@master
