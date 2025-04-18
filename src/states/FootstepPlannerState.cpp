@@ -114,15 +114,15 @@ void FootstepPlannerState::start(mc_control::fsm::Controller & _ctl)
       {ctl().name(), "FootstepPlanner"}, mc_rtc::gui::Button("PlanAndWalk", [this]() { triggered_ = true; }),
       mc_rtc::gui::XYTheta(
           "GoalPose",
-          [this]() -> std::array<double, 4> {
+          [this]() -> std::array<double, 4>
+          {
             std::array<double, 4> goalFootMidpose;
             std::copy(goalFootMidpose_.begin(), goalFootMidpose_.begin() + 3, goalFootMidpose.begin());
             goalFootMidpose[3] = 0.0;
             return goalFootMidpose;
           },
-          [this](const std::array<double, 4> & goalFootMidpose) {
-            std::copy(goalFootMidpose.begin(), goalFootMidpose.begin() + 3, goalFootMidpose_.begin());
-          }),
+          [this](const std::array<double, 4> & goalFootMidpose)
+          { std::copy(goalFootMidpose.begin(), goalFootMidpose.begin() + 3, goalFootMidpose_.begin()); }),
       mc_rtc::gui::Polygon("Obstacles", {mc_rtc::gui::Color::Gray, 0.02},
                            [obstPolygonList]() { return obstPolygonList; }));
 
@@ -170,9 +170,8 @@ void FootstepPlannerState::planningThread()
           return Eigen::Vector3d(pose.translation().x(), pose.translation().y(),
                                  mc_rbdyn::rpyFromMat(pose.rotation()).z());
         };
-        auto convertTo3d = [](const Eigen::Vector3d & trans) -> sva::PTransformd {
-          return sva::PTransformd(sva::RotZ(trans.z()), Eigen::Vector3d(trans.x(), trans.y(), 0));
-        };
+        auto convertTo3d = [](const Eigen::Vector3d & trans) -> sva::PTransformd
+        { return sva::PTransformd(sva::RotZ(trans.z()), Eigen::Vector3d(trans.x(), trans.y(), 0)); };
 
         std::unordered_map<Foot, Eigen::Vector3d> footPoses2d = {
             {Foot::Left, convertTo2d(ctl().footManager_->targetFootPose(Foot::Left))},

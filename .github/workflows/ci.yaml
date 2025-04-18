@@ -229,7 +229,7 @@ jobs:
             apt-mirrors:
               mc-rtc:
                 cloudsmith: mc-rtc/${{ matrix.mc-rtc-version }}
-            apt: libmc-rtc-dev mc-rtc-utils mc-state-observation doxygen graphviz jvrc-choreonoid choreonoid libcnoid-dev
+            apt: libmc-rtc-dev mc-rtc-utils mc-state-observation doxygen graphviz jvrc-choreonoid
           ros: |
             apt: ros-base mc-rtc-plugin eigen-conversions
       - name: Install standalone dependencies

@@ -186,8 +186,10 @@ void BaselineWalkingController::setDefaultAnchor()
   {
     datastore().remove(anchorName);
   }
-  datastore().make_call(anchorName, [this](const mc_rbdyn::Robot & robot) {
-    return sva::interpolate(robot.surfacePose(footManager_->surfaceName(Foot::Left)),
-                            robot.surfacePose(footManager_->surfaceName(Foot::Right)), 0.5);
-  });
+  datastore().make_call(anchorName,
+                        [this](const mc_rbdyn::Robot & robot)
+                        {
+                          return sva::interpolate(robot.surfacePose(footManager_->surfaceName(Foot::Left)),
+                                                  robot.surfacePose(footManager_->surfaceName(Foot::Right)), 0.5);
+                        });
 }

@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 MAINTAINER m-murooka@aist.go.jp
 
 ARG REPOSITORY=isri-aist
@@ -64,25 +64,25 @@ RUN source /opt/ros/${ROS_DISTRO}/setup.bash && rosdep install -y -r --from-path
 
 # Catkin build
 RUN source /opt/ros/${ROS_DISTRO}/setup.bash && catkin build baseline_footstep_planner -DCMAKE_BUILD_TYPE=RelWithDebInfo
-RUN source ${HOME}/catkin_ws/devel/setup.bash && catkin build baseline_walking_controller -DCMAKE_BUILD_TYPE=RelWithDebInfo -DENABLE_QLD=ON
-RUN echo "source ${HOME}/catkin_ws/devel/setup.bash" >> ${HOME}/.bashrc
+RUN source ${HOME}/catkin_ws/install/setup.bash && catkin build baseline_walking_controller -DCMAKE_BUILD_TYPE=RelWithDebInfo -DENABLE_QLD=ON
+RUN echo "source ${HOME}/catkin_ws/install/setup.bash" >> ${HOME}/.bashrc
 
 # Setup simulation
 WORKDIR ${HOME}
 RUN mkdir -p ${HOME}/.config/mc_rtc/controllers
 RUN cp ${HOME}/catkin_ws/src/isri-aist/BaselineWalkingController/etc/mc_rtc.yaml ${HOME}/.config/mc_rtc/mc_rtc.yaml
 RUN echo $'#!/usr/bin/env bash \n\
-source ${HOME}/catkin_ws/devel/setup.bash \n\
+source ${HOME}/catkin_ws/install/setup.bash \n\
 cp ${HOME}/catkin_ws/src/isri-aist/BaselineWalkingController/.github/workflows/config/WalkingOnPlane.yaml ${HOME}/.config/mc_rtc/controllers/BaselineWalkingController.yaml \n\
 /usr/share/hrpsys/samples/JVRC1/clear-omninames.sh \n\
 cd /usr/share/hrpsys/samples/JVRC1 && choreonoid --start-simulation sim_mc.cnoid' > ${HOME}/walk_on_plane.bash
 RUN echo $'#!/usr/bin/env bash \n\
-source ${HOME}/catkin_ws/devel/setup.bash \n\
+source ${HOME}/catkin_ws/install/setup.bash \n\
 cp ${HOME}/catkin_ws/src/isri-aist/BaselineWalkingController/.github/workflows/config/WalkingOnStairs.yaml ${HOME}/.config/mc_rtc/controllers/BaselineWalkingController.yaml \n\
 /usr/share/hrpsys/samples/JVRC1/clear-omninames.sh \n\
 cd /usr/share/hrpsys/samples/JVRC1 && choreonoid --start-simulation sim_mc_comanoid_staircase.cnoid' > ${HOME}/walk_on_stairs.bash
 RUN echo $'#!/usr/bin/env bash \n\
-source ${HOME}/catkin_ws/devel/setup.bash \n\
+source ${HOME}/catkin_ws/install/setup.bash \n\
 cp ${HOME}/catkin_ws/src/isri-aist/BaselineWalkingController/.github/workflows/config/WalkingWithFootstepPlanner.yaml ${HOME}/.config/mc_rtc/controllers/BaselineWalkingController.yaml \n\
 /usr/share/hrpsys/samples/JVRC1/clear-omninames.sh \n\
 roscore > /dev/null 2>&1 < /dev/null & \n\

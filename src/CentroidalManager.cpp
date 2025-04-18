@@ -279,9 +279,8 @@ void CentroidalManager::addToGUI(mc_rtc::gui::StateBuilder & gui)
       mc_rtc::gui::Checkbox(
           "useTargetPoseForControlRobotAnchorFrame",
           [this]() { return config().useTargetPoseForControlRobotAnchorFrame; },
-          [this]() {
-            config().useTargetPoseForControlRobotAnchorFrame = !config().useTargetPoseForControlRobotAnchorFrame;
-          }),
+          [this]()
+          { config().useTargetPoseForControlRobotAnchorFrame = !config().useTargetPoseForControlRobotAnchorFrame; }),
       mc_rtc::gui::Checkbox(
           "useActualComForWrenchDist", [this]() { return config().useActualComForWrenchDist; },
           [this]() { config().useActualComForWrenchDist = !config().useActualComForWrenchDist; }),
@@ -301,26 +300,30 @@ void CentroidalManager::addToGUI(mc_rtc::gui::StateBuilder & gui)
                      [this](const std::string & v) { config().dcmEstimatorConfig.dcmCorrectionMode = v; }),
                  mc_rtc::gui::NumberInput(
                      "biasDriftPerSecondStd", [this]() { return config().dcmEstimatorConfig.biasDriftPerSecondStd; },
-                     [this](double v) {
+                     [this](double v)
+                     {
                        config().dcmEstimatorConfig.biasDriftPerSecondStd = v;
                        dcmEstimator_->setBiasDriftPerSecond(v);
                      }),
                  mc_rtc::gui::NumberInput(
                      "dcmMeasureErrorStd", [this]() { return config().dcmEstimatorConfig.dcmMeasureErrorStd; },
-                     [this](double v) {
+                     [this](double v)
+                     {
                        config().dcmEstimatorConfig.dcmMeasureErrorStd = v;
                        dcmEstimator_->setDcmMeasureErrorStd(v);
                      }),
                  mc_rtc::gui::NumberInput(
                      "zmpMeasureErrorStd", [this]() { return config().dcmEstimatorConfig.zmpMeasureErrorStd; },
-                     [this](double v) {
+                     [this](double v)
+                     {
                        config().dcmEstimatorConfig.zmpMeasureErrorStd = v;
                        dcmEstimator_->setZmpMeasureErrorStd(v);
                      }),
                  mc_rtc::gui::ArrayInput(
                      "biasLimit", {"local X", "local Y"},
                      [this]() -> const Eigen::Vector2d & { return config().dcmEstimatorConfig.biasLimit; },
-                     [this](const Eigen::Vector2d & v) {
+                     [this](const Eigen::Vector2d & v)
+                     {
                        config().dcmEstimatorConfig.biasLimit = v;
                        dcmEstimator_->setBiasLimit(v);
                      }),
@@ -331,7 +334,8 @@ void CentroidalManager::addToGUI(mc_rtc::gui::StateBuilder & gui)
       {ctl().name(), config().name, "Plot"}, mc_rtc::gui::ElementsStacking::Horizontal,
       mc_rtc::gui::Button(
           "Plot CoM-ZMP-X",
-          [this, &gui]() {
+          [this, &gui]()
+          {
             using namespace mc_rtc::gui;
             gui.addPlot(
                 "CoM-ZMP-X", plot::X("t", [this]() { return ctl().t(); }),
@@ -363,7 +367,8 @@ void CentroidalManager::addToGUI(mc_rtc::gui::StateBuilder & gui)
       {ctl().name(), config().name, "Plot"}, mc_rtc::gui::ElementsStacking::Horizontal,
       mc_rtc::gui::Button(
           "Plot CoM-ZMP-Y",
-          [this, &gui]() {
+          [this, &gui]()
+          {
             using namespace mc_rtc::gui;
             gui.addPlot(
                 "CoM-ZMP-Y", plot::X("t", [this]() { return ctl().t(); }),
@@ -430,17 +435,21 @@ void CentroidalManager::addToLogger(mc_rtc::Logger & logger)
   logger.addLogEntry(config().name + "_ZMP_ref", this, [this]() { return refZmp_; });
   MC_RTC_LOG_HELPER(config().name + "_ZMP_planned", plannedZmp_);
   MC_RTC_LOG_HELPER(config().name + "_ZMP_control", controlZmp_);
-  logger.addLogEntry(config().name + "_ZMP_controlWrenchDist", this, [this]() {
-    return wrenchDist_ ? calcZmp(ForceColl::calcWrenchList(contactList_, wrenchDist_->resultWrenchRatio_), refZmp_.z())
-                       : Eigen::Vector3d::Zero();
-  });
+  logger.addLogEntry(config().name + "_ZMP_controlWrenchDist", this,
+                     [this]()
+                     {
+                       return wrenchDist_ ? calcZmp(
+                                  ForceColl::calcWrenchList(contactList_, wrenchDist_->resultWrenchRatio_), refZmp_.z())
+                                          : Eigen::Vector3d::Zero();
+                     });
   MC_RTC_LOG_HELPER(config().name + "_ZMP_measured", measuredZMP_);
   logger.addLogEntry(config().name + "_ZMP_SupportRegion_min", this, [this]() { return supportRegion_[0]; });
   logger.addLogEntry(config().name + "_ZMP_SupportRegion_max", this, [this]() { return supportRegion_[1]; });
 
-  logger.addLogEntry(config().name + "_CentroidalMomentum_controlRobot", this, [this]() {
-    return rbd::computeCentroidalMomentum(ctl().robot().mb(), ctl().robot().mbc(), ctl().robot().com());
-  });
+  logger.addLogEntry(
+      config().name + "_CentroidalMomentum_controlRobot", this,
+      [this]()
+      { return rbd::computeCentroidalMomentum(ctl().robot().mb(), ctl().robot().mbc(), ctl().robot().com()); });
 
   logger.addLogEntry(config().name + "_DcmEstimator_enableDcmEstimator", this,
                      [this]() { return config().dcmEstimatorConfig.enableDcmEstimator; });

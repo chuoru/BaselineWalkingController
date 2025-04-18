@@ -32,9 +32,10 @@ void CentroidalManagerFootGuidedControl::addToLogger(mc_rtc::Logger & logger)
 {
   CentroidalManager::addToLogger(logger);
 
-  logger.addLogEntry(config_.name + "_FootGuided_capturePoint", this, [this]() -> Eigen::Vector2d {
-    return mpcCom_.head<2>() + std::sqrt(lastRefComZ_ / CCC::constants::g) * mpcComVel_.head<2>();
-  });
+  logger.addLogEntry(config_.name + "_FootGuided_capturePoint", this,
+                     [this]() -> Eigen::Vector2d {
+                       return mpcCom_.head<2>() + std::sqrt(lastRefComZ_ / CCC::constants::g) * mpcComVel_.head<2>();
+                     });
 }
 
 void CentroidalManagerFootGuidedControl::runMpc()

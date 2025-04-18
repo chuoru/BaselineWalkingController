@@ -37,7 +37,8 @@ void RosWalkState::start(mc_control::fsm::Controller & _ctl)
   // Setup ROS
   nh_ = rclcpp::Node::make_shared("ros_walk_state_node");
   // Use a dedicated queue so as not to call callbacks of other modules
-  poseSub_ = nh_->create_subscription<geometry_msgs::msg::PoseStamped>(poseTopicName, 1, std::bind(&RosWalkState::poseCallback, this , _1));
+  poseSub_ = nh_->create_subscription<geometry_msgs::msg::PoseStamped>(
+      poseTopicName, 1, std::bind(&RosWalkState::poseCallback, this, _1));
   poseMsg_ = nullptr;
 
   // Setup GUI
@@ -92,9 +93,8 @@ void RosWalkState::setGoal()
   auto convertTo2d = [](const sva::PTransformd & pose) -> Eigen::Vector3d {
     return Eigen::Vector3d(pose.translation().x(), pose.translation().y(), mc_rbdyn::rpyFromMat(pose.rotation()).z());
   };
-  auto convertTo3d = [](const Eigen::Vector3d & trans) -> sva::PTransformd {
-    return sva::PTransformd(sva::RotZ(trans.z()), Eigen::Vector3d(trans.x(), trans.y(), 0));
-  };
+  auto convertTo3d = [](const Eigen::Vector3d & trans) -> sva::PTransformd
+  { return sva::PTransformd(sva::RotZ(trans.z()), Eigen::Vector3d(trans.x(), trans.y(), 0)); };
   goalFootMidTrans_ = convertTo2d(convertTo3d(goalOffset_) * goalFootMidpose);
 
   ctl().gui()->removeElement({ctl().name(), "RosWalk"}, "GoalPose");
@@ -102,15 +102,15 @@ void RosWalkState::setGoal()
       {ctl().name(), "RosWalk"},
       mc_rtc::gui::XYTheta(
           "GoalPose",
-          [this]() -> std::array<double, 4> {
+          [this]() -> std::array<double, 4>
+          {
             std::array<double, 4> goalFootMidTrans;
             std::copy(goalFootMidTrans_.data(), goalFootMidTrans_.data() + 3, goalFootMidTrans.begin());
             goalFootMidTrans[3] = 0.0;
             return goalFootMidTrans;
           },
-          [this](const std::array<double, 4> & goalFootMidTrans) {
-            std::copy(goalFootMidTrans.begin(), goalFootMidTrans.begin() + 3, goalFootMidTrans_.data());
-          }));
+          [this](const std::array<double, 4> & goalFootMidTrans)
+          { std::copy(goalFootMidTrans.begin(), goalFootMidTrans.begin() + 3, goalFootMidTrans_.data()); }));
 
   poseMsg_ = nullptr;
 }
@@ -126,9 +126,8 @@ void RosWalkState::walkToGoal()
   auto convertTo2d = [](const sva::PTransformd & pose) -> Eigen::Vector3d {
     return Eigen::Vector3d(pose.translation().x(), pose.translation().y(), mc_rbdyn::rpyFromMat(pose.rotation()).z());
   };
-  auto convertTo3d = [](const Eigen::Vector3d & trans) -> sva::PTransformd {
-    return sva::PTransformd(sva::RotZ(trans.z()), Eigen::Vector3d(trans.x(), trans.y(), 0));
-  };
+  auto convertTo3d = [](const Eigen::Vector3d & trans) -> sva::PTransformd
+  { return sva::PTransformd(sva::RotZ(trans.z()), Eigen::Vector3d(trans.x(), trans.y(), 0)); };
 
   sva::PTransformd currentFootMidpose = projGround(sva::interpolate(
       ctl().footManager_->targetFootPose(Foot::Left), ctl().footManager_->targetFootPose(Foot::Right), 0.5));

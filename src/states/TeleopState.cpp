@@ -35,21 +35,20 @@ void TeleopState::start(mc_control::fsm::Controller & _ctl)
   // Setup ROS
   nh_ = rclcpp::Node::make_shared("teleop_state_node");
   // Use a dedicated queue so as not to call callbacks of other modules
-  twistSub_ = nh_->create_subscription<geometry_msgs::msg::Twist>(twistTopicName, 1, std::bind(&TeleopState::twistCallback, this, _1));
+  twistSub_ = nh_->create_subscription<geometry_msgs::msg::Twist>(twistTopicName, 1,
+                                                                  std::bind(&TeleopState::twistCallback, this, _1));
 
   // Setup GUI
   ctl().gui()->addElement({ctl().name(), "Teleop"},
                           mc_rtc::gui::Button("StartTeleop", [this]() { ctl().footManager_->startVelMode(); }));
-  ctl().gui()->addElement({ctl().name(), "Teleop", "State"},
-                          mc_rtc::gui::ArrayInput(
-                              "targetVel", {"x", "y", "theta"},
-                              [this]() -> Eigen::Vector3d {
-                                return Eigen::Vector3d(targetVel_[0], targetVel_[1],
-                                                       mc_rtc::constants::toDeg(targetVel_[2]));
-                              },
-                              [this](const Eigen::Vector3d & v) {
-                                targetVel_ = Eigen::Vector3d(v[0], v[1], mc_rtc::constants::toRad(v[2]));
-                              }));
+  ctl().gui()->addElement(
+      {ctl().name(), "Teleop", "State"},
+      mc_rtc::gui::ArrayInput(
+          "targetVel", {"x", "y", "theta"},
+          [this]() -> Eigen::Vector3d
+          { return Eigen::Vector3d(targetVel_[0], targetVel_[1], mc_rtc::constants::toDeg(targetVel_[2])); },
+          [this](const Eigen::Vector3d & v)
+          { targetVel_ = Eigen::Vector3d(v[0], v[1], mc_rtc::constants::toRad(v[2])); }));
 
   output("OK");
 }
