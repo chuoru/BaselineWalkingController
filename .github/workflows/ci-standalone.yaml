@@ -39,7 +39,12 @@ jobs:
           apt-mirrors:
             mc-rtc:
               cloudsmith: mc-rtc/head
-          apt: cmake libeigen3-dev libgtest-dev libmc-rtc-dev libeigen-qld-dev
+          apt: cmake libeigen3-dev libgtest-dev
+    - name: Install mc_rtc
+      run: |
+        curl -1sLf 'https://dl.cloudsmith.io/public/mc-rtc/head/setup.deb.sh' | sudo -E bash
+        sudo apt update
+        sudo apt install -y libmc-rtc-dev mc-rtc-utils
     - name: Build and test
       uses: jrl-umi3218/github-actions/build-cmake-project@master
       with:
