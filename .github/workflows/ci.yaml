@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-22.04]
-        catkin-build: [catkin, standalone]
+        colcon-build: [colcon, standalone]
         build-type: [RelWithDebInfo, Debug]
         mc-rtc-version: [head, stable]
         compiler: [gcc]
@@ -27,12 +27,12 @@ jobs:
           - build-type: Debug
             mc-rtc-version: stable
           # Some packages have not been released onto the stable mirror yet
-          - catkin-build: standalone
+          - colcon-build: standalone
             mc-rtc-version: stable
         include:
           # compiler
           - os: ubuntu-22.04
-            catkin-build: standalone # catkin
+            colcon-build: standalone # colcon
             build-type: RelWithDebInfo
             mc-rtc-version: head
             compiler: clang # gcc
@@ -41,7 +41,7 @@ jobs:
             motion-type: WalkingOnPlane
           # motion-type
           - os: ubuntu-22.04
-            catkin-build: catkin
+            colcon-build: colcon
             build-type: RelWithDebInfo
             mc-rtc-version: head
             compiler: gcc
@@ -49,7 +49,7 @@ jobs:
             mpc-framework: OpenLoopMpc
             motion-type: WalkingOnStairs # WalkingOnPlane
           - os: ubuntu-22.04
-            catkin-build: catkin
+            colcon-build: colcon
             build-type: RelWithDebInfo
             mc-rtc-version: head
             compiler: gcc
@@ -57,7 +57,7 @@ jobs:
             mpc-framework: OpenLoopMpc
             motion-type: WalkingOnPlaneWaypoint # WalkingOnPlane
           - os: ubuntu-22.04
-            catkin-build: catkin
+            colcon-build: colcon
             build-type: RelWithDebInfo
             mc-rtc-version: head
             compiler: gcc
@@ -65,7 +65,7 @@ jobs:
             mpc-framework: OpenLoopMpc
             motion-type: WalkingOnPlaneVel # WalkingOnPlane
           - os: ubuntu-22.04
-            catkin-build: catkin
+            colcon-build: colcon
             build-type: RelWithDebInfo
             mc-rtc-version: head
             compiler: gcc
@@ -73,7 +73,7 @@ jobs:
             mpc-framework: OpenLoopMpc
             motion-type: WalkingOnPlaneRos # WalkingOnPlane
           - os: ubuntu-22.04
-            catkin-build: catkin
+            colcon-build: colcon
             build-type: RelWithDebInfo
             mc-rtc-version: head
             compiler: gcc
@@ -81,7 +81,7 @@ jobs:
             mpc-framework: OpenLoopMpc
             motion-type: WalkingWithFootstepPlanner # WalkingOnPlane
           - os: ubuntu-22.04
-            catkin-build: standalone # catkin
+            colcon-build: standalone # colcon
             build-type: RelWithDebInfo
             mc-rtc-version: head
             compiler: gcc
@@ -89,7 +89,7 @@ jobs:
             mpc-framework: OpenLoopMpc
             motion-type: WalkingOnStairs # WalkingOnPlane
           - os: ubuntu-22.04
-            catkin-build: standalone # catkin
+            colcon-build: standalone # colcon
             build-type: RelWithDebInfo
             mc-rtc-version: head
             compiler: gcc
@@ -97,7 +97,7 @@ jobs:
             mpc-framework: OpenLoopMpc
             motion-type: WalkingOnPlaneWaypoint # WalkingOnPlane
           - os: ubuntu-22.04
-            catkin-build: standalone # catkin
+            colcon-build: standalone # colcon
             build-type: RelWithDebInfo
             mc-rtc-version: head
             compiler: gcc
@@ -106,7 +106,7 @@ jobs:
             motion-type: WalkingOnPlaneVel # WalkingOnPlane
           # Skip ROS-based states because standalone build does not assume the existence of ROS.
           # - os: ubuntu-22.04
-          #   catkin-build: standalone # catkin
+          #   colcon-build: standalone # colcon
           #   build-type: RelWithDebInfo
           #   mc-rtc-version: head
           #   compiler: gcc
@@ -114,7 +114,7 @@ jobs:
           #   mpc-framework: OpenLoopMpc
           #   motion-type: WalkingOnPlaneRos # WalkingOnPlane
           - os: ubuntu-22.04
-            catkin-build: standalone # catkin
+            colcon-build: standalone # colcon
             build-type: RelWithDebInfo
             mc-rtc-version: head
             compiler: gcc
@@ -123,7 +123,7 @@ jobs:
             motion-type: WalkingWithFootstepPlanner # WalkingOnPlane
           # mpc-method, mpc-framework
           - os: ubuntu-22.04
-            catkin-build: catkin
+            colcon-build: colcon
             build-type: RelWithDebInfo
             mc-rtc-version: head
             compiler: gcc
@@ -131,7 +131,7 @@ jobs:
             mpc-framework: OpenLoopMpc
             motion-type: WalkingOnPlane
           - os: ubuntu-22.04
-            catkin-build: catkin
+            colcon-build: colcon
             build-type: RelWithDebInfo
             mc-rtc-version: head
             compiler: gcc
@@ -139,7 +139,7 @@ jobs:
             mpc-framework: OpenLoopMpc
             motion-type: WalkingOnPlane
           - os: ubuntu-22.04
-            catkin-build: catkin
+            colcon-build: colcon
             build-type: RelWithDebInfo
             mc-rtc-version: head
             compiler: gcc
@@ -147,7 +147,7 @@ jobs:
             mpc-framework: OpenLoopMpc
             motion-type: WalkingOnPlane
           - os: ubuntu-22.04
-            catkin-build: catkin
+            colcon-build: colcon
             build-type: RelWithDebInfo
             mc-rtc-version: head
             compiler: gcc
@@ -155,7 +155,7 @@ jobs:
             mpc-framework: ClosedLoopMpc # OpenLoopMpc
             motion-type: WalkingOnPlane
           - os: ubuntu-22.04
-            catkin-build: catkin
+            colcon-build: colcon
             build-type: RelWithDebInfo
             mc-rtc-version: head
             compiler: gcc
@@ -163,7 +163,7 @@ jobs:
             mpc-framework: ClosedLoopMpc # OpenLoopMpc
             motion-type: WalkingOnPlane
           - os: ubuntu-22.04
-            catkin-build: catkin
+            colcon-build: colcon
             build-type: RelWithDebInfo
             mc-rtc-version: head
             compiler: gcc
@@ -171,7 +171,7 @@ jobs:
             mpc-framework: ClosedLoopMpc # OpenLoopMpc
             motion-type: WalkingOnPlane
           - os: ubuntu-22.04
-            catkin-build: catkin
+            colcon-build: colcon
             build-type: RelWithDebInfo
             mc-rtc-version: head
             compiler: gcc
@@ -180,7 +180,7 @@ jobs:
             motion-type: WalkingOnPlane
     runs-on: ${{ matrix.os }}
     env:
-      RESULTS_POSTFIX: ${{ matrix.mpc-method }}-${{ matrix.mpc-framework }}-${{ matrix.motion-type }}-${{ matrix.catkin-build }}
+      RESULTS_POSTFIX: ${{ matrix.mpc-method }}-${{ matrix.mpc-framework }}-${{ matrix.motion-type }}-${{ matrix.colcon-build }}
     steps:
       - name: Setup environment variables
         run: |
@@ -196,7 +196,7 @@ jobs:
             echo "RUN_SIMULATION_STEPS=false" >> $GITHUB_ENV
           fi
           if [ "${{ matrix.os }}" == "ubuntu-22.04" ] && \
-             [ "${{ matrix.catkin-build }}" == "catkin" ] && \
+             [ "${{ matrix.colcon-build }}" == "colcon" ] && \
              [ "${{ matrix.build-type }}" == "RelWithDebInfo" ] && \
              [ "${{ matrix.mc-rtc-version }}" == "head" ] && \
              [ "${{ matrix.compiler }}" == "gcc" ] && \
@@ -210,7 +210,7 @@ jobs:
           else
             echo "UPLOAD_DOCUMENTATION=false" >> $GITHUB_ENV
           fi
-          if [ "${{ matrix.catkin-build }}" == "catkin" ]
+          if [ "${{ matrix.colcon-build }}" == "colcon" ]
           then
             echo "CI_DIR=${GITHUB_WORKSPACE}/catkin_ws/src/${{ github.repository }}/.github/workflows" >> $GITHUB_ENV
           else
@@ -229,11 +229,11 @@ jobs:
             apt-mirrors:
               mc-rtc:
                 cloudsmith: mc-rtc/${{ matrix.mc-rtc-version }}
-            apt: libmc-rtc-dev mc-rtc-utils mc-state-observation doxygen graphviz jvrc-choreonoid
+            apt: libmc-rtc-dev mc-rtc-utils mc-state-observation doxygen graphviz
           ros: |
             apt: ros-base mc-rtc-plugin eigen-conversions
       - name: Install standalone dependencies
-        if: matrix.catkin-build == 'standalone'
+        if: matrix.colcon-build == 'standalone'
         uses: jrl-umi3218/github-actions/install-dependencies@master
         with:
           compiler: ${{ matrix.compiler }}
@@ -241,7 +241,7 @@ jobs:
           ubuntu: |
             apt: libforcecontrolcollection-dev libtrajectorycollection-dev libcentroidalcontrolcollection-dev
       - name: Install BaselineFootstepPlanner for standalone build
-        if: matrix.catkin-build == 'standalone' && matrix.motion-type == 'WalkingWithFootstepPlanner'
+        if: matrix.colcon-build == 'standalone' && matrix.motion-type == 'WalkingWithFootstepPlanner'
         uses: jrl-umi3218/github-actions/install-dependencies@master
         with:
           compiler: ${{ matrix.compiler }}
@@ -252,35 +252,35 @@ jobs:
             - path: isri-aist/BaselineFootstepPlanner
               ref: master
       - name: Checkout repository code for standalone build
-        if: matrix.catkin-build == 'standalone'
+        if: matrix.colcon-build == 'standalone'
         uses: actions/checkout@v3
         with:
           submodules: recursive
       - name: Standalone build
-        if: matrix.catkin-build == 'standalone'
+        if: matrix.colcon-build == 'standalone'
         uses: jrl-umi3218/github-actions/build-cmake-project@master
         with:
           compiler: ${{ matrix.compiler }}
           build-type: ${{ matrix.build-type }}
       - name: Catkin build
-        if: matrix.catkin-build == 'catkin'
-        uses: jrl-umi3218/github-actions/build-catkin-project@master
+        if: matrix.colcon-build == 'colcon'
+        uses: jrl-umi3218/github-actions/build-colcon-project@master
         with:
           build-type: ${{ matrix.build-type }}
           cmake-args: -DINSTALL_DOCUMENTATION=${{ env.UPLOAD_DOCUMENTATION }} -DENABLE_QLD=ON
-          catkin-test-args: --no-deps
+          colcon-test-args: --no-deps
           build-packages: "baseline_walking_controller ${{ env.BASELINE_FOOTSTEP_PLANNER }}"
           test-packages: baseline_walking_controller
       - name: Catkin build again to ensure footstep planner found
-        if: matrix.catkin-build == 'catkin' && matrix.motion-type == 'WalkingWithFootstepPlanner'
+        if: matrix.colcon-build == 'colcon' && matrix.motion-type == 'WalkingWithFootstepPlanner'
         run: |
           set -e
           set -x
           cd ${GITHUB_WORKSPACE}/catkin_ws
           set +x
-          . devel/setup.bash
+          . install/setup.bash
           set -x
-          catkin build baseline_walking_controller --no-deps --force-cmake --limit-status-rate 0.1 --cmake-args -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} --catkin-make-args all run_tests
+          colcon build baseline_walking_controller --no-deps --force-cmake --limit-status-rate 0.1 --cmake-args -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} --colcon-make-args all run_tests
           catkin_test_results --verbose --all build
       - name: Run simulation
         if: env.RUN_SIMULATION_STEPS == 'true'
@@ -290,9 +290,9 @@ jobs:
           set -x
           sudo apt-get install -y -qq xvfb ffmpeg mesa-utils fluxbox xserver-xorg xserver-xorg-core xserver-xorg-video-all libwayland-egl1-mesa
           set +x
-          if [ "${{ matrix.catkin-build }}" == "catkin" ]
+          if [ "${{ matrix.colcon-build }}" == "colcon" ]
           then
-            . ${GITHUB_WORKSPACE}/catkin_ws/devel/setup.bash
+            . ${GITHUB_WORKSPACE}/catkin_ws/install/setup.bash
           fi
           set -x
           export DISPLAY=":1"
@@ -300,7 +300,7 @@ jobs:
           sleep 10s
           fluxbox 2> /dev/null &
           mkdir -p ${HOME}/.config/mc_rtc/controllers
-          if [ "${{ matrix.catkin-build }}" == "catkin" ]
+          if [ "${{ matrix.colcon-build }}" == "colcon" ]
           then
             cp ${GITHUB_WORKSPACE}/catkin_ws/src/${{ github.repository }}/etc/mc_rtc.yaml ${HOME}/.config/mc_rtc
           else
