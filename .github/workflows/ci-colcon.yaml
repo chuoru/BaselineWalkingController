@@ -84,9 +84,17 @@ jobs:
       - name: Checkout NMPC
         uses: actions/checkout@v3
         with:
-          repository: isri-aist/NMPC
+          repository: nqtabokado/NMPC
+          ref: feature/fix-ci
           submodules: recursive
           path: colcon_ws/src/NMPC
+      - name: Colcon build NMPC DDP
+        uses: jrl-umi3218/github-actions/build-colcon-project@master
+        with:
+          build-type: ${{ matrix.build-type }}
+          cmake-args: -DOPTIMIZE_FOR_NATIVE=${{ matrix.optimize-for-native }} -DINSTALL_DOCUMENTATION=${{ env.UPLOAD_DOCUMENTATION }}
+          build-packages: nmpc_ddp
+          test-packages: nmpc_ddp
       - name: Checkout CentroidalControlCollection
         uses: actions/checkout@v3
         with:

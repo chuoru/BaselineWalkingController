@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:20.04
 MAINTAINER m-murooka@aist.go.jp
 
 ARG REPOSITORY=isri-aist
@@ -22,27 +22,17 @@ RUN apt-get install -y sudo aptitude build-essential lsb-release wget gnupg2 cur
 RUN aptitude update -q
 
 # Install ROS
-ENV ROS_DISTRO humble
-RUN apt-get install -y software-properties-common
-RUN add-apt-repository universe
-RUN apt-get update
-RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
-RUN apt-get update
-RUN apt-get upgrade
-# RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-# RUN wget http://packages.ros.org/ros.key -O - | apt-key add -
-# RUN apt-get update -qq
-# RUN apt-get install -y ros-${ROS_DISTRO}-ros-base python3-catkin-tools python3-rosdep python3-wstool python3-rosinstall python3-rosinstall-generator doxygen graphviz
-RUN apt-get install -y ros-${ROS_DISTRO}-ros-base python3-rosdep python3-wstool python3-rosinstall python3-rosinstall-generator doxygen graphviz
-RUN source /opt/ros/humble/setup.bash
+ENV ROS_DISTRO noetic
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+RUN wget http://packages.ros.org/ros.key -O - | apt-key add -
+RUN apt-get update -qq
+RUN apt-get install -y ros-${ROS_DISTRO}-ros-base python3-catkin-tools python3-rosdep python3-wstool python3-rosinstall python3-rosinstall-generator doxygen graphviz
 
 # Install mc_rtc
-RUN curl -1sLf 'https://dl.cloudsmith.io/public/mc-rtc/head/setup.deb.sh' | bash
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/mc-rtc/stable/setup.deb.sh' | bash
 RUN apt-get install -y libmc-rtc-dev mc-rtc-utils ros-${ROS_DISTRO}-mc-rtc-plugin ros-${ROS_DISTRO}-mc-rtc-rviz-panel libeigen-qld-dev
 # https://github.com/jrl-umi3218/lipm_walking_controller/blob/b564d655388ae6a6725c504e5c74a62192e58c7c/.github/workflows/build.yml#L69
-# RUN apt-get install -y mc-state-observation jvrc-choreonoid xvfb ffmpeg mesa-utils fluxbox xserver-xorg xserver-xorg-core xserver-xorg-video-all libwayland-egl1-mesa
-RUN apt-get install -y mc-state-observation xvfb ffmpeg mesa-utils fluxbox xserver-xorg xserver-xorg-core xserver-xorg-video-all libwayland-egl1-mesa
+RUN apt-get install -y mc-state-observation jvrc-choreonoid xvfb ffmpeg mesa-utils fluxbox xserver-xorg xserver-xorg-core xserver-xorg-video-all libwayland-egl1-mesa
 
 # Enable nvidia
 # https://qiita.com/eisoku9618/items/c2cca0f0bf764def2efd
@@ -72,27 +62,27 @@ RUN rosdep init
 RUN rosdep update
 RUN source /opt/ros/${ROS_DISTRO}/setup.bash && rosdep install -y -r --from-paths src --ignore-src
 
-# colcon build
-RUN source /opt/ros/${ROS_DISTRO}/setup.bash && colcon build baseline_footstep_planner -DCMAKE_BUILD_TYPE=RelWithDebInfo
-RUN source ${HOME}/catkin_ws/install/setup.bash && colcon build baseline_walking_controller -DCMAKE_BUILD_TYPE=RelWithDebInfo -DENABLE_QLD=ON
-RUN echo "source ${HOME}/catkin_ws/install/setup.bash" >> ${HOME}/.bashrc
+# Catkin build
+RUN source /opt/ros/${ROS_DISTRO}/setup.bash && catkin build baseline_footstep_planner -DCMAKE_BUILD_TYPE=RelWithDebInfo
+RUN source ${HOME}/catkin_ws/devel/setup.bash && catkin build baseline_walking_controller -DCMAKE_BUILD_TYPE=RelWithDebInfo -DENABLE_QLD=ON
+RUN echo "source ${HOME}/catkin_ws/devel/setup.bash" >> ${HOME}/.bashrc
 
 # Setup simulation
 WORKDIR ${HOME}
 RUN mkdir -p ${HOME}/.config/mc_rtc/controllers
 RUN cp ${HOME}/catkin_ws/src/isri-aist/BaselineWalkingController/etc/mc_rtc.yaml ${HOME}/.config/mc_rtc/mc_rtc.yaml
 RUN echo $'#!/usr/bin/env bash \n\
-source ${HOME}/catkin_ws/install/setup.bash \n\
+source ${HOME}/catkin_ws/devel/setup.bash \n\
 cp ${HOME}/catkin_ws/src/isri-aist/BaselineWalkingController/.github/workflows/config/WalkingOnPlane.yaml ${HOME}/.config/mc_rtc/controllers/BaselineWalkingController.yaml \n\
 /usr/share/hrpsys/samples/JVRC1/clear-omninames.sh \n\
 cd /usr/share/hrpsys/samples/JVRC1 && choreonoid --start-simulation sim_mc.cnoid' > ${HOME}/walk_on_plane.bash
 RUN echo $'#!/usr/bin/env bash \n\
-source ${HOME}/catkin_ws/install/setup.bash \n\
+source ${HOME}/catkin_ws/devel/setup.bash \n\
 cp ${HOME}/catkin_ws/src/isri-aist/BaselineWalkingController/.github/workflows/config/WalkingOnStairs.yaml ${HOME}/.config/mc_rtc/controllers/BaselineWalkingController.yaml \n\
 /usr/share/hrpsys/samples/JVRC1/clear-omninames.sh \n\
 cd /usr/share/hrpsys/samples/JVRC1 && choreonoid --start-simulation sim_mc_comanoid_staircase.cnoid' > ${HOME}/walk_on_stairs.bash
 RUN echo $'#!/usr/bin/env bash \n\
-source ${HOME}/catkin_ws/install/setup.bash \n\
+source ${HOME}/catkin_ws/devel/setup.bash \n\
 cp ${HOME}/catkin_ws/src/isri-aist/BaselineWalkingController/.github/workflows/config/WalkingWithFootstepPlanner.yaml ${HOME}/.config/mc_rtc/controllers/BaselineWalkingController.yaml \n\
 /usr/share/hrpsys/samples/JVRC1/clear-omninames.sh \n\
 roscore > /dev/null 2>&1 < /dev/null & \n\
