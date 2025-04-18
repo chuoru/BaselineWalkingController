@@ -56,6 +56,8 @@ jobs:
           build-type: ${{ matrix.build-type }}
           ros: |
             apt: ros-base
+      - name: Install wstool
+        run: sudo apt-get update && sudo apt-get install -y python3-wstool
       - name: Colcon build baseline_walking_controller
         uses: jrl-umi3218/github-actions/build-colcon-project@master
         with:
