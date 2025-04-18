@@ -33,7 +33,8 @@ RUN apt-get upgrade
 # RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 # RUN wget http://packages.ros.org/ros.key -O - | apt-key add -
 # RUN apt-get update -qq
-RUN apt-get install -y ros-${ROS_DISTRO}-ros-base python3-catkin-tools python3-rosdep python3-wstool python3-rosinstall python3-rosinstall-generator doxygen graphviz
+# RUN apt-get install -y ros-${ROS_DISTRO}-ros-base python3-catkin-tools python3-rosdep python3-wstool python3-rosinstall python3-rosinstall-generator doxygen graphviz
+RUN apt-get install -y ros-${ROS_DISTRO}-ros-base python3-rosdep python3-wstool python3-rosinstall python3-rosinstall-generator doxygen graphviz
 
 # Install mc_rtc
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/mc-rtc/stable/setup.deb.sh' | bash

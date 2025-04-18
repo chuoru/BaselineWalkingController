@@ -212,7 +212,7 @@ jobs:
           fi
           if [ "${{ matrix.colcon-build }}" == "colcon" ]
           then
-            echo "CI_DIR=${GITHUB_WORKSPACE}/catkin_ws/src/${{ github.repository }}/.github/workflows" >> $GITHUB_ENV
+            echo "CI_DIR=${GITHUB_WORKSPACE}/colcon_ws/src/${{ github.repository }}/.github/workflows" >> $GITHUB_ENV
           else
             echo "CI_DIR=${GITHUB_WORKSPACE}/.github/workflows" >> $GITHUB_ENV
           fi
@@ -264,7 +264,7 @@ jobs:
         with:
           compiler: ${{ matrix.compiler }}
           build-type: ${{ matrix.build-type }}
-      - name: Catkin build
+      - name: Colcon build
         if: matrix.colcon-build == 'colcon'
         uses: jrl-umi3218/github-actions/build-colcon-project@master
         with:
@@ -273,17 +273,17 @@ jobs:
           colcon-test-args: --no-deps
           build-packages: "baseline_walking_controller ${{ env.BASELINE_FOOTSTEP_PLANNER }}"
           test-packages: baseline_walking_controller
-      - name: Catkin build again to ensure footstep planner found
+      - name: Colcon build again to ensure footstep planner found
         if: matrix.colcon-build == 'colcon' && matrix.motion-type == 'WalkingWithFootstepPlanner'
         run: |
           set -e
           set -x
-          cd ${GITHUB_WORKSPACE}/catkin_ws
+          cd ${GITHUB_WORKSPACE}/colcon_ws
           set +x
           . install/setup.bash
           set -x
           colcon build baseline_walking_controller --no-deps --force-cmake --limit-status-rate 0.1 --cmake-args -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} --colcon-make-args all run_tests
-          catkin_test_results --verbose --all build
+          colcon test-result --all --verbose
       - name: Run simulation
         if: env.RUN_SIMULATION_STEPS == 'true'
         # https://github.com/jrl-umi3218/lipm_walking_controller/blob/b564d655388ae6a6725c504e5c74a62192e58c7c/.github/workflows/build.yml#L64-L92
@@ -294,7 +294,7 @@ jobs:
           set +x
           if [ "${{ matrix.colcon-build }}" == "colcon" ]
           then
-            . ${GITHUB_WORKSPACE}/catkin_ws/install/setup.bash
+            . ${GITHUB_WORKSPACE}/colcon_ws/install/setup.bash
           fi
           set -x
           export DISPLAY=":1"
@@ -304,7 +304,7 @@ jobs:
           mkdir -p ${HOME}/.config/mc_rtc/controllers
           if [ "${{ matrix.colcon-build }}" == "colcon" ]
           then
-            cp ${GITHUB_WORKSPACE}/catkin_ws/src/${{ github.repository }}/etc/mc_rtc.yaml ${HOME}/.config/mc_rtc
+            cp ${GITHUB_WORKSPACE}/colcon_ws/src/${{ github.repository }}/etc/mc_rtc.yaml ${HOME}/.config/mc_rtc
           else
             echo "Enabled: BaselineWalkingController" > ${HOME}/.config/mc_rtc/mc_rtc.yaml
           fi
@@ -379,7 +379,7 @@ jobs:
         run: |
           set -e
           set -x
-          cd ${GITHUB_WORKSPACE}/catkin_ws/src/${{ github.repository }}
+          cd ${GITHUB_WORKSPACE}/colcon_ws/src/${{ github.repository }}
           git config --global user.name "Masaki Murooka"
           git config --global user.email "m-murooka@aist.go.jp"
           git remote set-url origin "https://mmurooka:${{ secrets.CI_TOKEN }}@github.com/isri-aist/BaselineWalkingController"
@@ -388,7 +388,7 @@ jobs:
           rm -rf cmake/
           git checkout --quiet gh-pages
           rm -rf doxygen/
-          cp -r ${GITHUB_WORKSPACE}/catkin_ws/build/baseline_walking_controller/doc/html/ doxygen
+          cp -r ${GITHUB_WORKSPACE}/colcon_ws/build/baseline_walking_controller/doc/html/ doxygen
           git add doxygen
           git_status=`git status -s`
           if test -n "$git_status"; then
