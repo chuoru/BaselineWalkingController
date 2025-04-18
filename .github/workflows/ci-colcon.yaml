@@ -66,7 +66,7 @@ jobs:
             apt-mirrors:
               mc-rtc:
                 cloudsmith: mc-rtc/head
-            apt: libgtest-dev libeigen-qld-dev libmc-rtc-dev libqpsolvercollection-dev
+            apt: libgtest-dev libeigen-qld-dev libmc-rtc-dev libqpsolvercollection-dev libforcecontrolcollection-dev
       # - name: Checkout repository code
       #   uses: actions/checkout@v3
       #   with:
@@ -76,11 +76,11 @@ jobs:
       #   with:
       #     repository: isri-aist/QpSolverCollection
       #     path: colcon_ws/src/QpSolverCollection
-      - name: Checkout ForceControlCollection
-        uses: actions/checkout@v3
-        with:
-          repository: isri-aist/ForceControlCollection
-          path: colcon_ws/src/ForceControlCollection
+      # - name: Checkout ForceControlCollection
+      #   uses: actions/checkout@v3
+      #   with:
+      #     repository: isri-aist/ForceControlCollection
+      #     path: colcon_ws/src/ForceControlCollection
       - name: Checkout NMPC
         uses: actions/checkout@v3
         with:
