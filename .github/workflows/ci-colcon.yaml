@@ -56,8 +56,28 @@ jobs:
           build-type: ${{ matrix.build-type }}
           ros: |
             apt: ros-base
-      - name: Install wstool
-        run: sudo apt-get update && sudo apt-get install -y python3-wstool
+      # - name: Install wstool
+      #   run: sudo apt-get update && sudo apt-get install -y python3-wstool
+      - name: Checkout repository code
+        uses: actions/checkout@v3
+        with:
+          path: colcon_ws/src/BaselineWalkingController
+      - name: Checkout QpSolverCollection
+        uses: actions/checkout@v3
+        with:
+          repository: isri-aist/QpSolverCollection
+          path: colcon_ws/src/QpSolverCollection
+      - name: Checkout ForceControlCollection
+        uses: actions/checkout@v3
+        with:
+          repository: isri-aist/ForceControlCollection
+          path: colcon_ws/src/ForceControlCollection
+      - name: Checkout NMPC
+        uses: actions/checkout@v3
+        with:
+          repository: isri-aist/NMPC
+          submodules: recursive
+          path: colcon_ws/src/NMPC
       - name: Colcon build baseline_walking_controller
         uses: jrl-umi3218/github-actions/build-colcon-project@master
         with:
