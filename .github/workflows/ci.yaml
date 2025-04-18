@@ -233,7 +233,7 @@ jobs:
           # ros: |
           #   apt: ros-base mc-rtc-plugin eigen-conversions
           ros: |
-            apt: ros-base eigen-conversions
+            apt: ros-base
       - name: Install standalone dependencies
         if: matrix.colcon-build == 'standalone'
         uses: jrl-umi3218/github-actions/install-dependencies@master

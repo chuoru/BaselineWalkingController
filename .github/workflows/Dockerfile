@@ -23,7 +23,7 @@ RUN aptitude update -q
 
 # Install ROS
 ENV ROS_DISTRO humble
-RUN apt-get install software-properties-common
+RUN apt-get install -y software-properties-common
 RUN add-apt-repository universe
 RUN apt-get update
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
