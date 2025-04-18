@@ -223,6 +223,8 @@ jobs:
             echo "BASELINE_FOOTSTEP_PLANNER=" >> $GITHUB_ENV
           fi
       - name: Install dependencies
+      - name: Install wstool
+        run: sudo apt-get update && sudo apt-get install -y python3-wstool
         uses: jrl-umi3218/github-actions/install-dependencies@master
         with:
           ubuntu: |
@@ -272,7 +274,6 @@ jobs:
         with:
           build-type: ${{ matrix.build-type }}
           cmake-args: -DINSTALL_DOCUMENTATION=${{ env.UPLOAD_DOCUMENTATION }} -DENABLE_QLD=ON
-          # colcon-test-args: --no-deps
           build-packages: "baseline_walking_controller ${{ env.BASELINE_FOOTSTEP_PLANNER }}"
           test-packages: baseline_walking_controller
       - name: Colcon build again to ensure footstep planner found
