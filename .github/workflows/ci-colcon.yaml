@@ -87,6 +87,20 @@ jobs:
           repository: isri-aist/NMPC
           submodules: recursive
           path: colcon_ws/src/NMPC
+      - name: Checkout CentroidalControlCollection
+        uses: actions/checkout@v3
+        with:
+          repository: ThomasDuvinage/CentroidalControlCollection
+          ref: ros2
+          submodules: recursive
+          path: colcon_ws/src/CentroidalControlCollection
+      - name: Colcon build CentroidalControlCollection
+        uses: jrl-umi3218/github-actions/build-colcon-project@master
+        with:
+          build-type: ${{ matrix.build-type }}
+          cmake-args: -DOPTIMIZE_FOR_NATIVE=${{ matrix.optimize-for-native }} -DINSTALL_DOCUMENTATION=${{ env.UPLOAD_DOCUMENTATION }} -DENABLE_QLD=ON -DUSE_ROS2=ON -DAMENT_CMAKE_UNINSTALL_TARGET=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+          build-packages: centroidal_control_collection
+          test-packages: centroidal_control_collection
       - name: Colcon build baseline_walking_controller
         uses: jrl-umi3218/github-actions/build-colcon-project@master
         with:
