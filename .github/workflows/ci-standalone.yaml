@@ -36,10 +36,10 @@ jobs:
         compiler: ${{ matrix.compiler }}
         build-type: ${{ matrix.build-type }}
         ubuntu: |
-          apt: cmake libeigen3-dev libgtest-dev
           apt-mirrors:
             mc-rtc:
-              cloudsmith: mc-rtc/${{ matrix.mc-rtc-version }}
+              cloudsmith: mc-rtc/head
+          apt: cmake libeigen3-dev libgtest-dev libmc-rtc-dev libeigen-qld-dev
     - name: Build and test
       uses: jrl-umi3218/github-actions/build-cmake-project@master
       with:
