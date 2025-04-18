@@ -29,7 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, ubuntu-24.04]
+        os: [ubuntu-22.04]
         build-type: [Debug, RelWithDebInfo, Release]
         include:
           - build-type: RelWithDebInfo
@@ -66,7 +66,7 @@ jobs:
             apt-mirrors:
               mc-rtc:
                 cloudsmith: mc-rtc/head
-            apt: libgtest-dev libeigen-qld-dev libmc-rtc-dev libqpsolvercollection-dev libforcecontrolcollection-dev
+            apt: libgtest-dev libeigen-qld-dev libmc-rtc-dev mc-rtc-utils libqpsolvercollection-dev libforcecontrolcollection-dev
       # - name: Checkout repository code
       #   uses: actions/checkout@v3
       #   with:
@@ -91,7 +91,7 @@ jobs:
         uses: jrl-umi3218/github-actions/build-colcon-project@master
         with:
           build-type: ${{ matrix.build-type }}
-          cmake-args: -DOPTIMIZE_FOR_NATIVE=${{ matrix.optimize-for-native }} -DINSTALL_DOCUMENTATION=${{ env.UPLOAD_DOCUMENTATION }} -DENABLE_QLD=ON
+          cmake-args: -DOPTIMIZE_FOR_NATIVE=${{ matrix.optimize-for-native }} -DINSTALL_DOCUMENTATION=${{ env.UPLOAD_DOCUMENTATION }} -DENABLE_QLD=ON -DUSE_ROS2=ON
           build-packages: baseline_walking_controller
           test-packages: baseline_walking_controller
       - name: Upload documentation
