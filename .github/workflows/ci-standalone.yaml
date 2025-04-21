@@ -37,7 +37,7 @@ jobs:
           apt-mirrors:
             mc-rtc:
               cloudsmith: mc-rtc/head
-          apt: libmc-rtc-dev mc-rtc-utils mc-state-observation doxygen graphviz libcnoid-dev
+          apt: libmc-rtc-dev mc-rtc-utils mc-state-observation doxygen graphviz
         ros: |
           apt: ros-base mc-rtc-plugin eigen-conversions
     - name: Install standalone dependencies

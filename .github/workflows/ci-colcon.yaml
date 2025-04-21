@@ -99,7 +99,7 @@ jobs:
         uses: jrl-umi3218/github-actions/build-colcon-project@master
         with:
           build-type: ${{ matrix.build-type }}
-          cmake-args: -DOPTIMIZE_FOR_NATIVE=${{ matrix.optimize-for-native }} -DINSTALL_DOCUMENTATION=${{ env.UPLOAD_DOCUMENTATION }} -DENABLE_QLD=ON -DUSE_ROS2=ON
+          cmake-args: -DOPTIMIZE_FOR_NATIVE=${{ matrix.optimize-for-native }} -DINSTALL_DOCUMENTATION=${{ env.UPLOAD_DOCUMENTATION }} -DENABLE_QLD=ON -DUSE_ROS2=ON -DCMAKE_INSTALL_PREFIX=install
           build-packages: baseline_walking_controller
           test-packages: baseline_walking_controller
       - name: Upload documentation
