@@ -33,21 +33,41 @@ jobs:
     - name: Install dependencies
       uses: jrl-umi3218/github-actions/install-dependencies@master
       with:
-        compiler: ${{ matrix.compiler }}
-        build-type: ${{ matrix.build-type }}
         ubuntu: |
           apt-mirrors:
             mc-rtc:
               cloudsmith: mc-rtc/head
-          apt: cmake libeigen3-dev libgtest-dev
-    - name: Install mc_rtc
-      run: |
-        curl -1sLf 'https://dl.cloudsmith.io/public/mc-rtc/head/setup.deb.sh' | sudo -E bash
-        sudo apt update
-        sudo apt install -y libmc-rtc-dev mc-rtc-utils
+          apt: libmc-rtc-dev mc-rtc-utils mc-state-observation doxygen graphviz libcnoid-dev
+        ros: |
+          apt: ros-base mc-rtc-plugin eigen-conversions
+    - name: Install standalone dependencies
+      uses: jrl-umi3218/github-actions/install-dependencies@master
+      with:
+        compiler: ${{ matrix.compiler }}
+        build-type: ${{ matrix.build-type }}
+        ubuntu: |
+          apt: libforcecontrolcollection-dev libtrajectorycollection-dev libcentroidalcontrolcollection-dev
+    # - name: Install dependencies
+    #   uses: jrl-umi3218/github-actions/install-dependencies@master
+    #   with:
+    #     compiler: ${{ matrix.compiler }}
+    #     build-type: ${{ matrix.build-type }}
+    #     ubuntu: |
+    #       apt-mirrors:
+    #         mc-rtc:
+    #           cloudsmith: mc-rtc/head
+    #       apt: cmake libeigen3-dev libgtest-dev
+    # - name: Install mc_rtc
+    #   run: |
+    #     curl -1sLf 'https://dl.cloudsmith.io/public/mc-rtc/head/setup.deb.sh' | sudo -E bash
+    #     sudo apt update
+    #     sudo apt install -y libmc-rtc-dev mc-rtc-utils
+    # - name: Checkout repository code for standalone build
+    #   uses: actions/checkout@v3
+    #   with:
+    #     submodules: recursive
     - name: Build and test
       uses: jrl-umi3218/github-actions/build-cmake-project@master
       with:
         compiler: ${{ matrix.compiler }}
         build-type: ${{ matrix.build-type }}
-        options: -DOPTIMIZE_FOR_NATIVE=${{ matrix.optimize-for-native }}
