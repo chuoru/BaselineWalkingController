@@ -67,20 +67,6 @@ jobs:
               mc-rtc:
                 cloudsmith: mc-rtc/head
             apt: libgtest-dev libeigen-qld-dev libmc-rtc-dev mc-rtc-utils libqpsolvercollection-dev libforcecontrolcollection-dev libtrajectorycollection-dev
-      # - name: Checkout repository code
-      #   uses: actions/checkout@v3
-      #   with:
-      #     path: colcon_ws/src/BaselineWalkingController
-      # - name: Checkout QpSolverCollection
-      #   uses: actions/checkout@v3
-      #   with:
-      #     repository: isri-aist/QpSolverCollection
-      #     path: colcon_ws/src/QpSolverCollection
-      # - name: Checkout ForceControlCollection
-      #   uses: actions/checkout@v3
-      #   with:
-      #     repository: isri-aist/ForceControlCollection
-      #     path: colcon_ws/src/ForceControlCollection
       - name: Checkout NMPC
         uses: actions/checkout@v3
         with:
