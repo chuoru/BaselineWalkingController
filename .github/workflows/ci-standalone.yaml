@@ -1,0 +1,73 @@
+name: CI of BaselineWalkingController (standalone)
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+  schedule:
+    - cron: '0 0 * * 0'
+
+jobs:
+  build-and-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, ubuntu-24.04]
+        build-type: [Debug, RelWithDebInfo, Release]
+        compiler: [gcc, clang]
+        include:
+          - build-type: Debug
+            optimize-for-native: OFF
+          - build-type: RelWithDebInfo
+            optimize-for-native: OFF
+          - build-type: Release
+            optimize-for-native: ON
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: Install dependencies
+      uses: jrl-umi3218/github-actions/install-dependencies@master
+      with:
+        ubuntu: |
+          apt-mirrors:
+            mc-rtc:
+              cloudsmith: mc-rtc/head
+          apt: libmc-rtc-dev mc-rtc-utils mc-state-observation doxygen graphviz
+        ros: |
+          apt: ros-base mc-rtc-plugin eigen-conversions
+    - name: Install standalone dependencies
+      uses: jrl-umi3218/github-actions/install-dependencies@master
+      with:
+        compiler: ${{ matrix.compiler }}
+        build-type: ${{ matrix.build-type }}
+        ubuntu: |
+          apt: libforcecontrolcollection-dev libtrajectorycollection-dev libcentroidalcontrolcollection-dev
+    # - name: Install dependencies
+    #   uses: jrl-umi3218/github-actions/install-dependencies@master
+    #   with:
+    #     compiler: ${{ matrix.compiler }}
+    #     build-type: ${{ matrix.build-type }}
+    #     ubuntu: |
+    #       apt-mirrors:
+    #         mc-rtc:
+    #           cloudsmith: mc-rtc/head
+    #       apt: cmake libeigen3-dev libgtest-dev
+    # - name: Install mc_rtc
+    #   run: |
+    #     curl -1sLf 'https://dl.cloudsmith.io/public/mc-rtc/head/setup.deb.sh' | sudo -E bash
+    #     sudo apt update
+    #     sudo apt install -y libmc-rtc-dev mc-rtc-utils
+    # - name: Checkout repository code for standalone build
+    #   uses: actions/checkout@v3
+    #   with:
+    #     submodules: recursive
+    - name: Build and test
+      uses: jrl-umi3218/github-actions/build-cmake-project@master
+      with:
+        compiler: ${{ matrix.compiler }}
+        build-type: ${{ matrix.build-type }}

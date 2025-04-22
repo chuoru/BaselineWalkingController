@@ -21,7 +21,8 @@ TaskGain::TaskGain(const mc_rtc::Configuration & mcRtcConfig)
     mc_rtc::log::error_and_throw("[TaskGain] The stiffness entry in the configuration is mandatory.");
   }
 
-  auto loadMotionVecConfig = [](const mc_rtc::Configuration & motionVecConfig) {
+  auto loadMotionVecConfig = [](const mc_rtc::Configuration & motionVecConfig)
+  {
     sva::MotionVecd motionVec;
     if(motionVecConfig.size())
     {

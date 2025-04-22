@@ -49,9 +49,10 @@ void CentroidalManagerDdpZmp::addToLogger(mc_rtc::Logger & logger)
 
   logger.addLogEntry(config_.name + "_DDP_computationDuration", this,
                      [this]() { return ddp_->ddp_solver_->computationDuration().solve; });
-  logger.addLogEntry(config_.name + "_DDP_iter", this, [this]() {
-    return ddp_->ddp_solver_->traceDataList().empty() ? 0 : ddp_->ddp_solver_->traceDataList().back().iter;
-  });
+  logger.addLogEntry(
+      config_.name + "_DDP_iter", this,
+      [this]()
+      { return ddp_->ddp_solver_->traceDataList().empty() ? 0 : ddp_->ddp_solver_->traceDataList().back().iter; });
 }
 
 void CentroidalManagerDdpZmp::runMpc()

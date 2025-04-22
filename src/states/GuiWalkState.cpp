@@ -15,7 +15,8 @@ void GuiWalkState::start(mc_control::fsm::Controller & _ctl)
                           mc_rtc::gui::Button("StopWalking", [this]() { ctl().footManager_->clearFootstepQueue(); }),
                           mc_rtc::gui::Form(
                               "Walk",
-                              [this](const mc_rtc::Configuration & config) {
+                              [this](const mc_rtc::Configuration & config)
+                              {
                                 ctl().footManager_->walkToRelativePose(
                                     Eigen::Vector3d(config(walkConfigKeys_.at("x")), config(walkConfigKeys_.at("y")),
                                                     mc_rtc::constants::toRad(config(walkConfigKeys_.at("theta")))),

@@ -10,7 +10,7 @@ on:
 jobs:
 
   build-docker:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/baseline_walking_controller
     steps:
@@ -47,7 +47,7 @@ jobs:
         mpc-method: [PreviewControlZmp]
         mpc-framework: [OpenLoopMpc]
         motion-type: [WalkingOnPlane, WalkingOnStairs, WalkingOnPlaneVel, WalkingWithFootstepPlanner]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     container:
       image: ghcr.io/${{ github.repository_owner }}/baseline_walking_controller_ci:${{ github.sha }}
     env:

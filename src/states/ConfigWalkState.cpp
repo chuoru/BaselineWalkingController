@@ -41,9 +41,8 @@ void ConfigWalkState::start(mc_control::fsm::Controller & _ctl)
   }
   else if(config_.has("configs") && config_("configs").has("footMidpose"))
   {
-    auto convertDegToRad = [](const Eigen::Vector3d & trans) -> Eigen::Vector3d {
-      return Eigen::Vector3d(trans.x(), trans.y(), mc_rtc::constants::toRad(trans.z()));
-    };
+    auto convertDegToRad = [](const Eigen::Vector3d & trans) -> Eigen::Vector3d
+    { return Eigen::Vector3d(trans.x(), trans.y(), mc_rtc::constants::toRad(trans.z())); };
     Eigen::Vector3d targetTrans = convertDegToRad(config_("configs")("footMidpose")("target"));
     std::vector<Eigen::Vector3d> waypointTransList = {};
     if(config_("configs")("footMidpose").has("waypointList"))
